@@ -16,7 +16,19 @@ import streamlit as st
 from dotenv import load_dotenv
 from openai import OpenAI
 from PIL import Image
-from rapidocr import EngineType, LangRec, ModelType, OCRVersion, RapidOCR
+try:
+    from rapidocr import EngineType, LangRec, ModelType, OCRVersion, RapidOCR
+    RAPIDOCR_AVAILABLE = True
+    RAPIDOCR_ERROR = None
+except Exception as e:
+    EngineType = None
+    LangRec = None
+    ModelType = None
+    OCRVersion = None
+    RapidOCR = None
+
+    RAPIDOCR_AVAILABLE = False
+    RAPIDOCR_ERROR = str(e)
 
 
 # =========================================================
@@ -661,6 +673,9 @@ def resolve_enum_member(enum_class: Any, *candidates: str) -> Any:
 
 @st.cache_resource
 def get_rapidocr_engine() -> RapidOCR:
+    if not RAPIDOCR_AVAILABLE:
+        return None
+        
     return RapidOCR(
         params={
             "Rec.engine_type": resolve_enum_member(
