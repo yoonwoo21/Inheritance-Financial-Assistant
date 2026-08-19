@@ -1,0 +1,9 @@
+streamlit
+openai
+python-dotenv
+PyMuPDF
+numpy
+pandas
+Pillow
+rapidocr
+onnxruntime
